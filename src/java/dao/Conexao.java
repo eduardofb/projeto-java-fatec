@@ -25,7 +25,7 @@ public class Conexao {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalho_lp3", "root", "root");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/produtos_db", "root", "root");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         }
