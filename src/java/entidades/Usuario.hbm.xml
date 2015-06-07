@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 4, 2015 2:33:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Usuario" table="usuario" catalog="produtos_db" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nome" type="string">
+            <column name="nome" length="100" not-null="true" />
+        </property>
+        <property name="login" type="string">
+            <column name="login" length="100" not-null="true" />
+        </property>
+        <property name="senha" type="string">
+            <column name="senha" length="100" not-null="true" />
+        </property>
+        <set name="produtos" table="produto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_fk" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Produto" />
+        </set>
+        <set name="clientes" table="cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_fk" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Cliente" />
+        </set>
+        <set name="saidas" table="saida" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_fk" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Saida" />
+        </set>
+        <set name="departamentos" table="departamento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_fk" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Departamento" />
+        </set>
+    </class>
+</hibernate-mapping>
