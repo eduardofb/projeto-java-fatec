@@ -13,17 +13,17 @@ public class Fornecedor  implements java.io.Serializable {
      private String cnpj;
      private String nome;
      private String endereco;
-     private int usuarioFk;
+     private Usuario usuario;
 
     public Fornecedor() {
     }
 
-    public Fornecedor(int id, String cnpj, String nome, String endereco, int usuarioFk) {
+    public Fornecedor(int id, String cnpj, String nome, String endereco, Usuario usuario) {
        this.id = id;
        this.cnpj = cnpj;
        this.nome = nome;
        this.endereco = endereco;
-       this.usuarioFk = usuarioFk;
+       this.usuario = usuario;
     }
    
     public int getId() {
@@ -54,12 +54,12 @@ public class Fornecedor  implements java.io.Serializable {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-    public int getUsuarioFk() {
-        return this.usuarioFk;
+    public Usuario getUsuario() {
+        return this.usuario;
     }
     
-    public void setUsuarioFk(int usuarioFk) {
-        this.usuarioFk = usuarioFk;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
 

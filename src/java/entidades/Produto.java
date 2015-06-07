@@ -16,7 +16,7 @@ public class Produto  implements java.io.Serializable {
      private int id;
      private Departamento departamento;
      private Usuario usuario;
-     private int descricao;
+     private String descricao;
      private BigDecimal precoCusto;
      private BigDecimal preco;
      private int quantidade;
@@ -28,7 +28,7 @@ public class Produto  implements java.io.Serializable {
     }
 
 	
-    public Produto(int id, Departamento departamento, Usuario usuario, int descricao, BigDecimal precoCusto, BigDecimal preco, int quantidade, Date dataCadastro, int margemEstoque) {
+    public Produto(int id, Departamento departamento, Usuario usuario, String descricao, BigDecimal precoCusto, BigDecimal preco, int quantidade, Date dataCadastro, int margemEstoque) {
         this.id = id;
         this.departamento = departamento;
         this.usuario = usuario;
@@ -39,7 +39,7 @@ public class Produto  implements java.io.Serializable {
         this.dataCadastro = dataCadastro;
         this.margemEstoque = margemEstoque;
     }
-    public Produto(int id, Departamento departamento, Usuario usuario, int descricao, BigDecimal precoCusto, BigDecimal preco, int quantidade, Date dataCadastro, int margemEstoque, Set saidas) {
+    public Produto(int id, Departamento departamento, Usuario usuario, String descricao, BigDecimal precoCusto, BigDecimal preco, int quantidade, Date dataCadastro, int margemEstoque, Set saidas) {
        this.id = id;
        this.departamento = departamento;
        this.usuario = usuario;
@@ -73,11 +73,11 @@ public class Produto  implements java.io.Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    public int getDescricao() {
+    public String getDescricao() {
         return this.descricao;
     }
     
-    public void setDescricao(int descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
     public BigDecimal getPrecoCusto() {

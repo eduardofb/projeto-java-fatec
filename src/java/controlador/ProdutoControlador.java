@@ -5,10 +5,11 @@
  */
 package controlador;
 
-import entidades.Cliente;
+import entidades.Produto;
 import entidades.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 import javax.servlet.ServletException;
@@ -16,15 +17,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.ClienteModelo;
-import modelo.UsuarioModelo;
+import modelo.DepartamentoModelo;
+import modelo.ProdutoModelo;
 
 /**
- *
- * @author carlos
+ * Controlador de produtos
+ * 
+ * @author Jayme
  */
-@WebServlet(name = "ClienteControlado", urlPatterns = {"/cliente"})
-public class ClienteControlador extends HttpServlet {
+@WebServlet(name = "ProdutoControlador", urlPatterns = {"/produto"})
+public class ProdutoControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,14 +39,12 @@ public class ClienteControlador extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     
+        
         String acao = request.getParameter("action");
         if(acao.equals("lista")) {
-            request.getRequestDispatcher("/cliente/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/prodto/list.jsp").forward(request, response);
         } else if(acao.equals("novo")) {
-            request.getRequestDispatcher("/cliente/create.jsp").forward(request, response);
-        } else if(acao.equals("atualizar")) {
-            request.getRequestDispatcher("/cliente/update.jsp").forward(request, response);
+            request.getRequestDispatcher("/produto/create.jsp").forward(request, response);
         }
     }
 
@@ -60,12 +60,12 @@ public class ClienteControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       
         try {
-            ClienteModelo modelo = new ClienteModelo(HibernateUtil.getSessionFactory());
-            Cliente cliente = modelo.procurarPorId(new Long(request.getParameter("id")));
-            modelo.excluir(cliente);
-            request.getRequestDispatcher("/cliente/list.jsp").forward(request, response);
+            ProdutoModelo modelo = new ProdutoModelo(HibernateUtil.getSessionFactory());
+            Produto produto = modelo.procurarPorId(new Long(request.getParameter("id")));
+            modelo.excluir(produto);
+            request.getRequestDispatcher("/produto/list.jsp").forward(request, response);
         } catch(Exception ex) {
             response.sendError(500);
             ex.printStackTrace();
@@ -85,34 +85,30 @@ public class ClienteControlador extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            ClienteModelo modelo = new ClienteModelo(HibernateUtil.getSessionFactory());
+            ProdutoModelo produtoModelo = new ProdutoModelo(HibernateUtil.getSessionFactory());
+            DepartamentoModelo departamentoModelo = new DepartamentoModelo(HibernateUtil.getSessionFactory());
             if(request.getParameter("id").isEmpty()) { //Novo registro
-                Cliente cliente = new Cliente();
-                cliente.setId(new Random(1000).nextInt());
-                cliente.setNome(request.getParameter("nome"));
-                cliente.setCpf(request.getParameter("cpf"));
-                cliente.setEndereco(request.getParameter("endereco"));
-                cliente.setDataAniversario(new Date(request.getParameter("aniversario")));
-
-                Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-                cliente.setUsuario(usuario);
+                Produto produto = new Produto();
+                produto.setId(new Random(1000).nextInt());
+                produto.setDepartamento(departamentoModelo.procurarPorId(new Long(request.getParameter("id"))));
+                produto.setUsuario( (Usuario) request.getSession().getAttribute("usuario"));
+                produto.setDescricao(request.getParameter("descricao"));
+                produto.setPrecoCusto(new BigDecimal(request.getParameter("pcusto")));
+                produto.setPreco(new BigDecimal(request.getParameter("preco")));
+                produto.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
+                produto.setDataCadastro(new Date());
+                produto.setMargemEstoque(Integer.parseInt(request.getParameter("estoque")));
                 
-                modelo.salvar(cliente);
-            } else {
                 
-                Cliente cliente =  modelo.procurarPorId(new Long(request.getParameter("id")));
-                cliente.setNome(request.getParameter("nome"));
-                cliente.setCpf(request.getParameter("cpf"));
-                cliente.setEndereco(request.getParameter("endereco"));
-                cliente.setDataAniversario(new Date(request.getParameter("aniversario")));
-                
-                modelo.atualizar(cliente);
-            }
-            request.getRequestDispatcher("/cliente/list.jsp").forward(request, response);
+                produtoModelo.salvar(produto);
+            } 
+            request.getRequestDispatcher("/produto/list.jsp").forward(request, response);
        
         } catch(Exception ex) {
             System.out.println("Erro");
         }
+        
+        
     }
 
     /**

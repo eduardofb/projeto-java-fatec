@@ -14,8 +14,8 @@
         <many-to-one name="usuario" class="entidades.Usuario" fetch="select">
             <column name="usuario_fk" not-null="true" />
         </many-to-one>
-        <property name="descricao" type="int">
-            <column name="descricao" not-null="true" />
+        <property name="descricao" type="string">
+            <column name="descricao" length="100" not-null="true" />
         </property>
         <property name="precoCusto" type="big_decimal">
             <column name="preco_custo" precision="5" not-null="true" />
