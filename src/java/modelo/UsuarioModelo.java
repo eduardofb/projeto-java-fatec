@@ -6,7 +6,6 @@
 package modelo;
 
 import entidades.Usuario;
-import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
 
 /**

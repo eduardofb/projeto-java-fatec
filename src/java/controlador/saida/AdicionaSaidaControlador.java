@@ -44,7 +44,7 @@ public class AdicionaSaidaControlador extends HttpServlet {
             
             
             Usuario usuario = new Usuario();
-            usuario.setId(new Random(1000).nextInt());
+            usuario.setId(new Random(1000).nextLong());
             usuario.setNome(nome);
             usuario.setLogin(login);
             usuario.setSenha(request.getParameter(""));

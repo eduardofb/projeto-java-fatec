@@ -5,7 +5,6 @@
  */
 package modelo;
 
-import controlador.HibernateUtil;
 import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Query;
@@ -51,6 +50,7 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
             tx.rollback();
             ex.printStackTrace();
         } finally {
+            session.disconnect();
             session.close();
         }
     }
@@ -68,6 +68,7 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
             tx.rollback();
             ex.printStackTrace();
         } finally {
+            session.disconnect();
             session.close();
         }
     }
@@ -84,7 +85,8 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
            tx.rollback();
            ex.printStackTrace();
        } finally {
-           session.close();
+            session.disconnect();
+            session.close();
        }
     }
 
@@ -99,7 +101,8 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
             tx.rollback();
             ex.printStackTrace();
         } finally {
-            HibernateUtil.getSessionFactory().close();
+            session.disconnect();
+            session.close();
         }
         
         return result;
@@ -108,7 +111,20 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
     
     @Override
     public List<T> retornarTodos() throws Exception {
-        return session.createCriteria(getTipo()).list();
+        Transaction tx = session.beginTransaction();
+        List<T> results = null;
+        try {
+            tx.begin();
+            results = session.createCriteria(getTipo()).list();
+            tx.commit();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            tx.rollback();
+        } finally {
+            session.disconnect();
+            session.close();
+        }
+        return results;
     }
     
     public T procurarPorUsuarioESenha(String login, String senha) {
@@ -122,7 +138,8 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
         } catch(Exception ex) {
             ex.printStackTrace();
         } finally {
-            HibernateUtil.getSessionFactory().close();
+            session.disconnect();
+            session.close();
         }
         
         return result;

@@ -6,9 +6,7 @@
 package controlador.usuario;
 
 import controlador.HibernateUtil;
-import entidades.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -29,7 +27,7 @@ public class ListaUsuarioControlador extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UsuarioModelo modelo = new UsuarioModelo(HibernateUtil.getSessionFactory());
         try {
-            request.getSession().setAttribute("usuarios", modelo.retornarTodos());
+            request.getSession(true).setAttribute("usuarios", modelo.retornarTodos());
         } catch (Exception ex) {
             Logger.getLogger(ListaUsuarioControlador.class.getName()).log(Level.SEVERE, null, ex);
         }
