@@ -5,23 +5,21 @@
  */
 package controlador;
 
-import entidades.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.UsuarioModelo;
 
 /**
- *
+ * Controlador de relatórios
+ * 
  * @author Jayme
  */
-@WebServlet(name = "UsuarioControlador", urlPatterns = {"/usuario"})
-public class UsuarioControlador extends HttpServlet {
+@WebServlet(name = "RelatorioController", urlPatterns = {"/relatorio"})
+public class RelatorioController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +33,7 @@ public class UsuarioControlador extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String acao = request.getParameter("action");
-        if(acao.equals("lista")) {
-            request.getRequestDispatcher("/usuario/list.jsp").forward(request, response);
-        } else if(acao.equals("novo")) {
-            request.getRequestDispatcher("/usuario/create.jsp").forward(request, response);
-        } else if(acao.equals("atualizar")) {
-            request.getRequestDispatcher("/usuario/update.jsp").forward(request, response);
-        }
-        
+        request.getRequestDispatcher("/relatorio/list.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,10 +48,7 @@ public class UsuarioControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
         
-        //requisicao para deletar.
-        System.out.println("excluindo!");
     }
 
     /**
@@ -75,30 +62,7 @@ public class UsuarioControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            UsuarioModelo modelo = new UsuarioModelo(HibernateUtil.getSessionFactory());
-            if(request.getParameter("id").isEmpty()) { //Novo registro
-                Usuario usuario = new Usuario();
-                usuario.setId(new Random(1000).nextInt());
-                usuario.setNome(request.getParameter("nome"));
-                usuario.setLogin(request.getParameter("login"));
-                usuario.setSenha(request.getParameter("senha"));
-
-                
-                modelo.salvar(usuario);
-            } else {
-                Usuario usuario = modelo.procurarPorId(new Long(request.getParameter("id")));
-                usuario.setNome(request.getParameter("nome"));
-                usuario.setLogin(request.getParameter("login"));
-                usuario.setSenha(request.getParameter("senha"));
-                
-                modelo.atualizar(usuario);
-            }
-            request.getRequestDispatcher("/usuario/list.jsp").forward(request, response);
-       
-        } catch(Exception ex) {
-            System.out.println("Erro");
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -17,15 +17,23 @@
                 <div class="container">
                     <ul class="nav">
                         <li>
-                            <a href="#">Produtos</a>
+                            <a href="listaUsuario">Usuario</a>
+                        </li>
+                        
+                        <li>
+                            <a href="listaProduto">Produtos</a>
                         </li>
 
                         <li>
-                            <a href="#">Departamento</a>
+                            <a href="listaDepartamento">Departamento</a>
                         </li>
 
                         <li>
-                            <a href="#">Saída</a>
+                            <a href="listaSaida">Saída</a>
+                        </li>
+                        
+                        <li>
+                            <a href="cliente?action=lista">Cliente</a>
                         </li>
                     </ul>
                 </div>

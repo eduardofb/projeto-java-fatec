@@ -11,7 +11,7 @@ import java.util.Set;
 public class Usuario  implements java.io.Serializable {
 
 
-     private int id;
+     private Long id;
      private String nome;
      private String login;
      private String senha;
@@ -24,13 +24,13 @@ public class Usuario  implements java.io.Serializable {
     }
 
 	
-    public Usuario(int id, String nome, String login, String senha) {
+    public Usuario(Long id, String nome, String login, String senha) {
         this.id = id;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
     }
-    public Usuario(int id, String nome, String login, String senha, Set produtos, Set clientes, Set saidas, Set departamentos) {
+    public Usuario(Long id, String nome, String login, String senha, Set produtos, Set clientes, Set saidas, Set departamentos) {
        this.id = id;
        this.nome = nome;
        this.login = login;
@@ -41,11 +41,11 @@ public class Usuario  implements java.io.Serializable {
        this.departamentos = departamentos;
     }
    
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getNome() {

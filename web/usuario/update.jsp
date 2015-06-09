@@ -1,17 +1,19 @@
-<%-- 
-    Document   : update
-    Created on : Jun 4, 2015, 3:16:42 PM
-    Author     : carlos
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Projeto FATEC</title>
+        
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="${pageContext.request.contextPath}/css/bootstrap.responsive.min.css" rel="stylesheet"/>
+        
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div class="container">
+            <%@include file="_form.jsp" %>
+        </div>
     </body>
 </html>

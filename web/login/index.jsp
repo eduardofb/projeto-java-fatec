@@ -4,7 +4,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+        <title>Projeto FATEC</title>
+        
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="${pageContext.request.contextPath}/css/bootstrap.responsive.min.css" rel="stylesheet"/>
         
@@ -17,6 +18,16 @@
             <div class="row">
 		<div class="span12">
 			<form class="form-horizontal" action='login' method="POST">
+                            
+                            <% 
+                                String erro = request.getParameter("erro");
+                                if(erro != null) {
+                                    out.append("<div class='alert alert-danger' role='alert'>");
+                                    out.append(request.getParameter("erro"));
+                                    out.append("</div>");
+                                }
+                            %>
+                            
 			  <fieldset>
 			    <div id="legend">
 			      <legend class="">Login</legend>

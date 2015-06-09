@@ -41,8 +41,9 @@ public class ProdutoControlador extends HttpServlet {
             throws ServletException, IOException {
         
         String acao = request.getParameter("action");
+        System.out.println(acao);
         if(acao.equals("lista")) {
-            request.getRequestDispatcher("/prodto/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/produto/list.jsp").forward(request, response);
         } else if(acao.equals("novo")) {
             request.getRequestDispatcher("/produto/create.jsp").forward(request, response);
         }
@@ -61,6 +62,7 @@ public class ProdutoControlador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
+        processRequest(request, response);
         try {
             ProdutoModelo modelo = new ProdutoModelo(HibernateUtil.getSessionFactory());
             Produto produto = modelo.procurarPorId(new Long(request.getParameter("id")));

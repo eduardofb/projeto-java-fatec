@@ -8,7 +8,7 @@
 <div class="control-group">
   <label class="control-label" for="textinput">Nome</label>
   <div class="controls">
-    <input id="nome" name="nome" placeholder="nome" class="input-xlarge" required="" type="text">
+      <input id="nome" name="nome" placeholder="nome" class="input-xlarge" required="" type="text" value="<% request.getParameter("nome"); %>">
     
   </div>
 </div>
@@ -17,7 +17,7 @@
 <div class="control-group">
   <label class="control-label" for="textinput">Login</label>
   <div class="controls">
-    <input id="login" name="login" placeholder="login" class="input-xlarge" required="" type="text">
+      <input id="login" name="login" placeholder="login" class="input-xlarge" required="" type="text" value="<% request.getParameter("login"); %>">
     
   </div>
 </div>
@@ -26,7 +26,7 @@
 <div class="control-group">
   <label class="control-label" for="passwordinput">Senha</label>
   <div class="controls">
-      <input id="senha" name="senha" placeholder="senha" class="input-xlarge" required="" type="password">
+      <input id="senha" name="senha" placeholder="senha" class="input-xlarge" required="" type="password" value="<% request.getParameter("senha"); %>">
     
   </div>
 </div>

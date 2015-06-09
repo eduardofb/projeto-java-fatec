@@ -3,39 +3,59 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.saida;
 
+import controlador.usuario.*;
+import controlador.HibernateUtil;
+import entidades.Cliente;
 import entidades.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.ClienteModelo;
 import modelo.UsuarioModelo;
 
 /**
- * Controlador de login
- * 
- * @author Jayme
+ *
+ * @author carlos
  */
-@WebServlet(name = "LoginControlador", urlPatterns = {"/login"})
-public class LoginControlador extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/login/index.jsp").forward(request, response);
+@WebServlet(name = "AlteraSaidaControlador", urlPatterns = {"/alteraSaida"})
+public class AlteraSaidaControlador extends HttpServlet {
+    
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        try {
+            //instanciando o modelo
+            UsuarioModelo modelo = new UsuarioModelo(HibernateUtil.getSessionFactory());
+            
+            //Pegando os parâmetros do request
+            String codigo = request.getParameter("id");
+            String nome = request.getParameter("nome");
+            String login = request.getParameter("login");
+            String senha = request.getParameter("senha");
+            
+            //Busca o usuario na base
+            Usuario usuario = modelo.procurarPorId(new Long(codigo));
+            usuario.setNome(nome);
+            usuario.setLogin(login);
+            usuario.setSenha(senha);
+            
+            //salva
+            modelo.atualizar(usuario);
+            
+            request.getRequestDispatcher("/usuario/list.jsp").forward(request, response);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
+
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -49,7 +69,7 @@ public class LoginControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        service(request, response);
     }
 
     /**
@@ -63,26 +83,7 @@ public class LoginControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        try {
-            String nome = request.getParameter("username");
-            String senha = request.getParameter("password");
-            
-            System.out.println(nome);
-            System.out.println(senha);
-            
-            UsuarioModelo model = new UsuarioModelo(HibernateUtil.getSessionFactory());
-            Usuario usuario = (Usuario) model.procurarPorUsuarioESenha(nome, senha);
-            if(usuario != null) {
-                request.getSession().setAttribute("usuario", usuario);
-                request.getRequestDispatcher("/dashboard/index.jsp").forward(request, response);
-            } else {
-                request.setAttribute("erro", "Login ou senha incorretos");
-                request.getRequestDispatcher("/login/index.jsp");
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        service(request, response);
     }
 
     /**

@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import controlador.HibernateUtil;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -31,58 +32,108 @@ import org.hibernate.Transaction;
 public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T, ID>{
 
     private Class<T> clazz;
-    private SessionFactory sf;
+    private Session session;
     
     public DAORepositorio(Class<T> clazz, SessionFactory sf) {
         super();
         this.clazz = clazz;
-        this.sf = sf;
+        this.session = sf.openSession();
     }
     
-    public DAORepositorio(SessionFactory em) {
+    public DAORepositorio(SessionFactory sf) {
         super();
-        this.sf = sf;
+        this.session = sf.openSession();
     }
     
     
     @Override
     public void salvar(T entidade) throws Exception {
-        Session session = this.sf.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        tx.begin(); //inicia a transacao
-        session.save(entidade);
-        tx.commit(); //commita a transacao
+        Transaction tx = null;
+        
+        try {
+            session.beginTransaction();
+            tx.begin(); //inicia a transacao
+            session.save(entidade);
+            tx.commit(); //commita a transacao
+        } catch(Exception ex) {
+            tx.rollback();
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public void atualizar(T entidade) throws Exception {
+        Transaction tx = null;
         
+        try {
+            session.beginTransaction();
+            tx.begin(); //inicia a transacao
+            session.update(entidade);
+            tx.commit(); //commita a transacao
+        } catch(Exception ex) {
+            tx.rollback();
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public void excluir(T entidade) throws Exception {
-       
+       Transaction tx = null;
+       try {
+           tx = session.beginTransaction();
+           tx.begin();
+           session.delete(entidade);
+           tx.commit();
+       } catch(Exception ex) {
+           tx.rollback();
+           ex.printStackTrace();
+       } finally {
+           session.close();
+       }
     }
 
     @Override
     public T procurarPorId(ID id) throws Exception {
-        return null;
+        Transaction tx = session.beginTransaction();
+        T result = null;
+        try {
+            result = (T) session.load(getTipo(), id);
+            tx.commit();
+        } catch(Exception ex) {
+            tx.rollback();
+            ex.printStackTrace();
+        } finally {
+            HibernateUtil.getSessionFactory().close();
+        }
+        
+        return result;
     }
 
     
     @Override
     public List<T> retornarTodos() throws Exception {
-        
-        Session session = this.sf.openSession();
-        Query query = session.createQuery("from " + this.clazz.getName());
-        
-        return query.list();
+        return session.createCriteria(getTipo()).list();
     }
     
-    public Object procurarPorUsuarioESenha(String usuario, String senha) {
-        Session session = this.sf.openSession();
-        Query query = session.createQuery("from Usuario where login = " + usuario + " and senha = " + senha);
-        return query.uniqueResult();
+    public T procurarPorUsuarioESenha(String login, String senha) {
+        Query query = null;
+        T result = null;
+        try {
+            query = session.createQuery("from Usuario where login = :login and senha = :senha");
+            query.setParameter("login", login);
+            query.setParameter("senha", senha);
+            result = (T) query.uniqueResult();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            HibernateUtil.getSessionFactory().close();
+        }
+        
+        return result;
     }
     
     public Class<T> getTipo() {
