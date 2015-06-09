@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 8, 2015 11:54:33 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="br.com.fatec.entidades.Cliente" table="cliente" catalog="produtos_db" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="br.com.fatec.entidades.Usuario" fetch="select">
+            <column name="usuario_fk" not-null="true" />
+        </many-to-one>
+        <property name="cpf" type="string">
+            <column name="cpf" length="50" not-null="true" />
+        </property>
+        <property name="nome" type="string">
+            <column name="nome" length="50" not-null="true" />
+        </property>
+        <property name="endereco" type="string">
+            <column name="endereco" length="50" not-null="true" />
+        </property>
+        <property name="dataAniversario" type="date">
+            <column name="data_aniversario" length="10" not-null="true" />
+        </property>
+        <set name="saidas" table="saida" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cliente_fk" not-null="true" />
+            </key>
+            <one-to-many class="br.com.fatec.entidades.Saida" />
+        </set>
+    </class>
+</hibernate-mapping>

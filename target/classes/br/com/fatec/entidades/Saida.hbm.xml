@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 8, 2015 11:54:33 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="br.com.fatec.entidades.Saida" table="saida" catalog="produtos_db" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="cliente" class="br.com.fatec.entidades.Cliente" fetch="select">
+            <column name="cliente_fk" not-null="true" />
+        </many-to-one>
+        <many-to-one name="produto" class="br.com.fatec.entidades.Produto" fetch="select">
+            <column name="produto_fk" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="br.com.fatec.entidades.Usuario" fetch="select">
+            <column name="usuario_fk" not-null="true" />
+        </many-to-one>
+        <property name="data" type="date">
+            <column name="data" length="10" not-null="true" />
+        </property>
+        <property name="preco" type="big_decimal">
+            <column name="preco" precision="5" not-null="true" />
+        </property>
+        <property name="quantidade" type="int">
+            <column name="quantidade" not-null="true" />
+        </property>
+        <property name="total" type="int">
+            <column name="total" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
