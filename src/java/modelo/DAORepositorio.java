@@ -7,10 +7,7 @@ package modelo;
 
 import controlador.HibernateUtil;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,17 +28,12 @@ import org.hibernate.Transaction;
  */
 public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T, ID>{
 
-    private Class<T> clazz;
-    private Session session;
+    private final Class<T> clazz;
+    private final Session session;
     
     public DAORepositorio(Class<T> clazz, SessionFactory sf) {
         super();
         this.clazz = clazz;
-        this.session = sf.openSession();
-    }
-    
-    public DAORepositorio(SessionFactory sf) {
-        super();
         this.session = sf.openSession();
     }
     
@@ -138,10 +130,6 @@ public class DAORepositorio<T, ID extends Serializable> implements DAOGenerico<T
     
     public Class<T> getTipo() {
         return clazz;
-    }
-    
-    public void setTipo(Class<T> clazz) {
-        this.clazz = clazz;
     }
     
 }
